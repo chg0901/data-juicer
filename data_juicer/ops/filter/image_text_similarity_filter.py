@@ -6,7 +6,9 @@ from data_juicer.utils.availability_utils import AvailabilityChecking
 from data_juicer.utils.constant import Fields, StatsKeys
 from data_juicer.utils.mm_utils import (SpecialTokens, load_image,
                                         remove_special_tokens)
-from data_juicer.utils.model_utils import get_model, prepare_model
+from data_juicer.utils.model_utils import _get_model as get_model
+from data_juicer.utils.model_utils import _prepare_model as prepare_model
+from data_juicer.utils.model_utils import huggingface_clip
 
 from ..base_op import OPERATORS, Filter
 from ..op_fusion import LOADED_IMAGES
@@ -69,12 +71,12 @@ class ImageTextSimilarityFilter(Filter):
             raise ValueError(f'Keep strategy [{any_or_all}] is not supported. '
                              f'Can only be one of ["any", "all"].')
         self.any = (any_or_all == 'any')
-        self.model_key = prepare_model(model_type='hf_clip', model_key=hf_clip)
+        self.model_key = prepare_model(huggingface_clip, clip_name=hf_clip)
         self.reduce_mode = reduce_mode
         self.horizontal_flip = horizontal_flip
         self.vertical_flip = vertical_flip
 
-    def compute_stats(self, sample, context=False):
+    def compute_stats(self, sample, rank, context=False):
         # check if it's computed already
         if StatsKeys.image_text_similarity in sample[Fields.stats]:
             return sample
@@ -105,7 +107,7 @@ class ImageTextSimilarityFilter(Filter):
         text = sample[self.text_key]
         offset = 0
         similarity = []
-        model, processor = get_model(self.model_key)
+        model, processor = get_model(self.model_key, rank)
 
         for chunk in text.split(SpecialTokens.eoc):
             count = chunk.count(SpecialTokens.image)
@@ -130,7 +132,7 @@ class ImageTextSimilarityFilter(Filter):
                                    truncation=True,
                                    max_length=model.config.text_config.
                                    max_position_embeddings,
-                                   padding=True)
+                                   padding=True).to(model.device)
 
                 outputs = model(**inputs)
                 chunk_logits = outputs.logits_per_text.detach().cpu() / 100.0

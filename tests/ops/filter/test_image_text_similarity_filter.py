@@ -3,7 +3,9 @@ import unittest
 
 from datasets import Dataset
 
-from data_juicer.ops.filter.image_text_similarity_filter import ImageTextSimilarityFilter
+from data_juicer.ops.filter.image_text_similarity_filter import \
+    ImageTextSimilarityFilter
+from data_juicer.utils import initialize
 from data_juicer.utils.constant import Fields
 from data_juicer.utils.mm_utils import SpecialTokens
 
@@ -26,7 +28,7 @@ class ImageTextSimilarityFilterTest(unittest.TestCase):
             dataset = dataset.add_column(name=Fields.stats,
                                          column=[{}] * dataset.num_rows)
 
-        dataset = dataset.map(op.compute_stats, num_proc=num_proc)
+        dataset = dataset.map(op.compute_stats, num_proc=num_proc, with_rank=True)
         dataset = dataset.filter(op.process, num_proc=num_proc)
         dataset = dataset.select_columns(column_names=['text', 'images'])
         res_list = dataset.to_list()
@@ -274,4 +276,5 @@ class ImageTextSimilarityFilterTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    initialize()
     unittest.main()

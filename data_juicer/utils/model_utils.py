@@ -1,5 +1,8 @@
 import os
+from functools import partial
 
+import multiprocess as mp
+import torch
 import wget
 from loguru import logger
 
@@ -186,6 +189,9 @@ def prepare_huggingface_clip(clip_name):
     return (model, processor)
 
 
+huggingface_clip = prepare_huggingface_clip
+
+
 def prepare_huggingface_blip(blip_name):
     """
     Prepare and load a blip and processor from HuggingFace.
@@ -290,3 +296,28 @@ def get_model(model_key, lang='en', model_type='sentencepiece'):
     if model_key not in MODEL_ZOO:
         prepare_model(lang=lang, model_type=model_type, model_key=model_key)
     return MODEL_ZOO.get(model_key, None)
+
+
+def _prepare_model(model_func, **model_kwargs):
+    global MODEL_ZOO
+    func = partial(model_func, **model_kwargs)
+    if mp.get_start_method() == 'fork':
+        model = func()
+        MODEL_ZOO[func] = model
+    return func
+
+
+def _get_model(model_key, rank=-1):
+    global MODEL_ZOO
+    if model_key not in MODEL_ZOO:
+        MODEL_ZOO[model_key] = model_key()
+        if torch.cuda.is_available() and isinstance(rank, int):
+            for index, module in enumerate(MODEL_ZOO[model_key]):
+                if callable(getattr(module, 'to', None)):
+                    logger.info(f'Move {module.__class__} to cuda:{rank}')
+                    module.to(f'cuda:{rank}')
+                    ref_module = MODEL_ZOO[model_key][index]
+                    logger.debug(
+                        f'{ref_module.__class__} in device {ref_module.device}'
+                    )
+    return MODEL_ZOO[model_key]
