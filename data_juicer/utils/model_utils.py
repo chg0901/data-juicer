@@ -312,10 +312,11 @@ def _get_model(model_key, rank=-1):
     if model_key not in MODEL_ZOO:
         MODEL_ZOO[model_key] = model_key()
         if torch.cuda.is_available() and isinstance(rank, int):
+            ordinal = rank % torch.cuda.device_count()
             for index, module in enumerate(MODEL_ZOO[model_key]):
                 if callable(getattr(module, 'to', None)):
-                    logger.info(f'Move {module.__class__} to cuda:{rank}')
-                    module.to(f'cuda:{rank}')
+                    logger.info(f'Move {module.__class__} to cuda:{ordinal}')
+                    module.to(f'cuda:{ordinal}')
                     ref_module = MODEL_ZOO[model_key][index]
                     logger.debug(
                         f'{ref_module.__class__} in device {ref_module.device}'
