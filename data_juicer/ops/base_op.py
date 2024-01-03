@@ -9,6 +9,8 @@ class OP:
         self,
         text_key: str = None,
         image_key: str = None,
+        *args,
+        **kwargs
     ):
         """
         Base class of operators.
@@ -39,6 +41,8 @@ class Mapper(OP):
         self,
         text_key: str = None,
         image_key: str = None,
+        *args,
+        **kwargs
     ):
         """
         Base class that conducts data editing.
@@ -72,6 +76,8 @@ class Filter(OP):
         self,
         text_key: str = None,
         image_key: str = None,
+        *args,
+        **kwargs
     ):
         """
         Base class that removes specific info.
@@ -114,6 +120,8 @@ class Deduplicator(OP):
         self,
         text_key: str = None,
         image_key: str = None,
+        *args,
+        **kwargs
     ):
         """
         Base class that conducts deduplication.
@@ -155,6 +163,8 @@ class Selector(OP):
         self,
         text_key: str = None,
         image_key: str = None,
+        *args,
+        **kwargs
     ):
         """
         Base class that conducts selection in dataset-level.
