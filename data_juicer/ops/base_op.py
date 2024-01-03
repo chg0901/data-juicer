@@ -1,3 +1,6 @@
+import torch
+from loguru import logger
+
 from data_juicer.utils.registry import Registry
 
 OPERATORS = Registry('Operators')
@@ -5,13 +8,11 @@ OPERATORS = Registry('Operators')
 
 class OP:
 
-    def __init__(
-        self,
-        text_key: str = None,
-        image_key: str = None,
-        *args,
-        **kwargs
-    ):
+    def __init__(self,
+                 text_key: str = None,
+                 image_key: str = None,
+                 *args,
+                 **kwargs):
         """
         Base class of operators.
 
@@ -28,7 +29,16 @@ class OP:
             image_key = 'images'
         self.image_key = image_key
 
+        self.accelerator = kwargs.pop('accelerator', 'cpu').lower()
+        if self.accelerator not in ('cpu', 'cuda'):
+            raise ValueError(f"Invalid accelerator '{self.accelerator}'."
+                             "Only 'cpu' and 'cuda' are supported.")
+        if self.accelerator == 'cuda' and not torch.cuda.is_available():
+            self.accelerator = 'cpu'
+            logger.warning('CUDA is unavailable. Setting accelerator to CPU.')
+
         from data_juicer.core.data import wrap_func_with_nested_access
+
         self.process = wrap_func_with_nested_access(self.process)
 
     def process(self, *args, **kwargs):
@@ -37,13 +47,11 @@ class OP:
 
 class Mapper(OP):
 
-    def __init__(
-        self,
-        text_key: str = None,
-        image_key: str = None,
-        *args,
-        **kwargs
-    ):
+    def __init__(self,
+                 text_key: str = None,
+                 image_key: str = None,
+                 *args,
+                 **kwargs):
         """
         Base class that conducts data editing.
 
@@ -72,13 +80,11 @@ class Mapper(OP):
 
 class Filter(OP):
 
-    def __init__(
-        self,
-        text_key: str = None,
-        image_key: str = None,
-        *args,
-        **kwargs
-    ):
+    def __init__(self,
+                 text_key: str = None,
+                 image_key: str = None,
+                 *args,
+                 **kwargs):
         """
         Base class that removes specific info.
 
@@ -90,6 +96,7 @@ class Filter(OP):
         super(Filter, self).__init__(text_key, image_key)
 
         from data_juicer.core.data import wrap_func_with_nested_access
+
         self.compute_stats = wrap_func_with_nested_access(self.compute_stats)
 
     def compute_stats(self, sample, context=False):
@@ -116,13 +123,11 @@ class Filter(OP):
 
 class Deduplicator(OP):
 
-    def __init__(
-        self,
-        text_key: str = None,
-        image_key: str = None,
-        *args,
-        **kwargs
-    ):
+    def __init__(self,
+                 text_key: str = None,
+                 image_key: str = None,
+                 *args,
+                 **kwargs):
         """
         Base class that conducts deduplication.
 
@@ -134,6 +139,7 @@ class Deduplicator(OP):
         super(Deduplicator, self).__init__(text_key, image_key)
 
         from data_juicer.core.data import wrap_func_with_nested_access
+
         self.compute_hash = wrap_func_with_nested_access(self.compute_hash)
 
     def compute_hash(self, sample):
@@ -159,13 +165,11 @@ class Deduplicator(OP):
 
 class Selector(OP):
 
-    def __init__(
-        self,
-        text_key: str = None,
-        image_key: str = None,
-        *args,
-        **kwargs
-    ):
+    def __init__(self,
+                 text_key: str = None,
+                 image_key: str = None,
+                 *args,
+                 **kwargs):
         """
         Base class that conducts selection in dataset-level.
 
