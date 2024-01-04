@@ -307,11 +307,13 @@ def _prepare_model(model_func, **model_kwargs):
     return func
 
 
-def _get_model(model_key, rank=-1):
+def _get_model(model_key, rank=None):
     global MODEL_ZOO
     if model_key not in MODEL_ZOO:
         MODEL_ZOO[model_key] = model_key()
-        if torch.cuda.is_available() and isinstance(rank, int):
+        if torch.cuda.is_available():
+            if rank is None:
+                rank = 0
             ordinal = rank % torch.cuda.device_count()
             for index, module in enumerate(MODEL_ZOO[model_key]):
                 if callable(getattr(module, 'to', None)):
