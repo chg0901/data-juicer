@@ -59,7 +59,7 @@ class TextActionFilterTest(unittest.TestCase):
             'text': 'to play piano.'
         }]
         dataset = Dataset.from_list(ds_list)
-        op = TextActionFilter(lang='en')
+        op = TextActionFilter()
         self._run_text_action_filter(dataset, tgt_list, op, ['text'])
 
     def test_zh_text_case(self):
@@ -81,7 +81,7 @@ class TextActionFilterTest(unittest.TestCase):
             'text': 'Tom在打篮球'
         }]
         dataset = Dataset.from_list(ds_list)
-        op = TextActionFilter(lang='zh')
+        op = TextActionFilter(spacy_model='en_core_web_md-3.5.0.zip')
         self._run_text_action_filter(dataset, tgt_list, op, ['text'])
 
     def test_image_text_case(self):
@@ -107,7 +107,7 @@ class TextActionFilterTest(unittest.TestCase):
         }]
 
         dataset = Dataset.from_list(ds_list)
-        op = TextActionFilter(lang='zh')
+        op = TextActionFilter(spacy_model='zh_core_web_md-3.5.0.zip')
         self._run_text_action_filter(dataset, tgt_list, op, ['text', 'images'])
 
 if __name__ == '__main__':

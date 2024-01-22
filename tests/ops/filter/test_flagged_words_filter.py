@@ -67,6 +67,7 @@ class FlaggedWordFilterTest(unittest.TestCase):
         }]
         dataset = Dataset.from_list(ds_list)
         op = FlaggedWordFilter(lang='zh',
+                               sp_model='zh.sp.model',
                                tokenization=True,
                                max_ratio=0.045,
                                use_words_aug=True)

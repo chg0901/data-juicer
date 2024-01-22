@@ -74,7 +74,7 @@ class WordRepetitionFilterTest(unittest.TestCase):
             'text': '基于前一步结果，在同一个聚类中找出那些过长文档为假正例，暂不进行滤除'
         }]
         dataset = Dataset.from_list(ds_list)
-        op = WordRepetitionFilter(lang='zh',
+        op = WordRepetitionFilter(sp_model='zh.sp.model',
                                   tokenization=True,
                                   rep_len=3,
                                   min_ratio=0.0,

@@ -64,7 +64,7 @@ class WordNumFilterTest(unittest.TestCase):
             'text': '基于前一步结果，在同一个聚类中找出那些过长文档为假正例，暂不进行滤除'
         }]
         dataset = Dataset.from_list(ds_list)
-        op = WordNumFilter(lang='zh',
+        op = WordNumFilter(sp_model='zh.sp.model',
                            tokenization=True,
                            min_num=10,
                            max_num=25)

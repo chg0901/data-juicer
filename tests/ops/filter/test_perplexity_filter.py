@@ -43,7 +43,7 @@ class PerplexityFilterTest(unittest.TestCase):
             'text': 'Do you need a cup of coffee?'
         }]
         dataset = Dataset.from_list(ds_list)
-        op = PerplexityFilter(lang='en', max_ppl=900)
+        op = PerplexityFilter(sp_model='en.sp.model', kl_model='en.arpa.bin', max_ppl=900)
         self._run_perplexity_filter(dataset, tgt_list, op)
 
 

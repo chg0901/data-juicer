@@ -49,7 +49,7 @@ class TextEntityDependencyFilterTest(unittest.TestCase):
             'text': 'a green tree',
         }]
         dataset = Dataset.from_list(ds_list)
-        op = TextEntityDependencyFilter(lang='en', any_or_all='any')
+        op = TextEntityDependencyFilter(any_or_all='any')
         self._run_text_entity_denpendency_filter(dataset, tgt_list, op, ['text'])
 
     def test_zh_text_case(self):
@@ -75,7 +75,7 @@ class TextEntityDependencyFilterTest(unittest.TestCase):
             'text': '一只会上树的猫'
         }]
         dataset = Dataset.from_list(ds_list)
-        op = TextEntityDependencyFilter(lang='zh', any_or_all='all')
+        op = TextEntityDependencyFilter(spacy_model='zh_core_web_md-3.5.0.zip', any_or_all='all')
         self._run_text_entity_denpendency_filter(dataset, tgt_list, op, ['text'])
 
     def test_image_text_case(self):
@@ -101,7 +101,7 @@ class TextEntityDependencyFilterTest(unittest.TestCase):
         }]
 
         dataset = Dataset.from_list(ds_list)
-        op = TextEntityDependencyFilter(lang='zh', any_or_all='any')
+        op = TextEntityDependencyFilter(spacy_model='zh_core_web_md-3.5.0.zip', any_or_all='any')
         self._run_text_entity_denpendency_filter(dataset, tgt_list, op, ['text', 'images'])
 
 if __name__ == '__main__':
