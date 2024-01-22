@@ -67,6 +67,7 @@ class StopWordsFilterTest(unittest.TestCase):
         }]
         dataset = Dataset.from_list(ds_list)
         op = StopWordsFilter(lang='zh',
+                             sp_model='zh.sp.model',
                              tokenization=True,
                              min_ratio=0.2,
                              use_words_aug=True)

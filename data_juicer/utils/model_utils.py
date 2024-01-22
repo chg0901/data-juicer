@@ -257,7 +257,7 @@ def prepare_model(model_type, **model_kwargs):
     return model_key
 
 
-def get_model(model_key):
+def get_model(model_key=None):
     global MODEL_ZOO
     if model_key is None:
         logger.warning('Please specify model_key to get models')
