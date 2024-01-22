@@ -185,21 +185,15 @@ def get_keep_method_udf(keep_method):
                                   f'implemented for now.')
 
 
-def tokenize_dataset(ds, tokenizer):
+def tokenize_dataset(ds, sp_model):
     """
     Tokenize the texts in input dataset using specified tokenizer
     :param ds: dataset to be tokenized
-    :param tokenizer: tokenizer used to tokenize texts
+    :param sp_model: tokenizer used to tokenize texts
     :return: a dataset with an extra column "words" that stores the tokenized
         texts
     """
-    if os.path.exists(tokenizer):
-        # if it's a local model
-        tkn = spm.SentencePieceProcessor()
-        tkn.load(tokenizer)
-    else:
-        # else, try to load it from our remote model list
-        tkn = prepare_sentencepiece_model(tokenizer, ())
+    tkn = prepare_sentencepiece_model(sp_model)
     # create a PySpark udf to tokenize the dataset
     tokenizer_udf = udf(lambda text: tkn.encode_as_pieces(text),
                         ArrayType(StringType()))
@@ -207,26 +201,26 @@ def tokenize_dataset(ds, tokenizer):
     return ds.withColumn('words', tokenizer_udf(col('text')))
 
 
-def train(output_model_path, ds, tokenizer=None):
+def train(output_model_path, ds, sp_model=None):
     """
     Train a quality classifier with training dataset and export the trained
     model to a specified path
     :param output_model_path: the path to store the trained model
     :param ds: training dataset
-    :param tokenizer: specified sentencepiece tokenizer. It's None in default,
+    :param sp_model: specified sentencepiece tokenizer. It's None in default,
         which means using the standard Tokenizer in PySpark
     :return:
     """
     logger.info('Preparing training quality classifier model...')
-    if tokenizer:
+    if sp_model:
         # tokenizer is not standard Tokenizer in PySpark, need to apply it
         # explicitly
-        ds = tokenize_dataset(ds, tokenizer)
+        ds = tokenize_dataset(ds, sp_model)
 
     # model
     hashingTF = HashingTF(inputCol='words', outputCol='features')
     lr = LogisticRegression()
-    if tokenizer is None:
+    if sp_model is None:
         # using standard Tokenizer in PySpark
         std_tokenizer = Tokenizer(inputCol='text', outputCol='words')
         pipeline = Pipeline(stages=[std_tokenizer, hashingTF, lr])
@@ -242,20 +236,20 @@ def train(output_model_path, ds, tokenizer=None):
     model.write().overwrite().save(output_model_path)
 
 
-def eval(model_path, ds, tokenizer=None):
+def eval(model_path, ds, sp_model=None):
     """
     Evaluate a quality classifier model on specified dataset
     :param model_path: the path to the model to be evaluated
     :param ds: evaluation dataset
-    :param tokenizer: specified sentencepiece tokenizer. It's None in default,
+    :param sp_model: specified sentencepiece tokenizer. It's None in default,
         which means using the standard Tokenizer in PySpark
     :return:
     """
     logger.info('Preparing to evaluate...')
-    if tokenizer:
+    if sp_model:
         # tokenizer is not standard Tokenizer in PySpark, need to apply it
         # explicitly
-        ds = tokenize_dataset(ds, tokenizer)
+        ds = tokenize_dataset(ds, sp_model)
 
     logger.info('Start evaluation...')
     model = prepare_model(model_path)
@@ -277,22 +271,22 @@ def eval(model_path, ds, tokenizer=None):
     logger.info(f'P: {precision}, R: {recall}, F1: {F1}')
 
 
-def predict(model, ds, tokenizer=None, keep_method='label'):
+def predict(model, ds, sp_model=None, keep_method='label'):
     """
     Predict document scores for a dataset using a trained quality classifier
     model
     :param model: the model used to predict
     :param ds: the dataset to be predicted
-    :param tokenizer: specified sentencepiece tokenizer. It's None in default,
+    :param sp_model: specified sentencepiece tokenizer. It's None in default,
         which means using the standard Tokenizer in PySpark
     :param keep_method: name of keep method to label the "should_keep" column
     :return:
     """
     logger.info('Start scoring dataset...')
-    if tokenizer:
+    if sp_model:
         # tokenizer is not standard Tokenizer in PySpark, need to apply it
         # explicitly
-        ds = tokenize_dataset(ds, tokenizer)
+        ds = tokenize_dataset(ds, sp_model)
 
     prediction = model.transform(ds)
 

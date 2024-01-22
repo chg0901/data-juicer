@@ -17,7 +17,7 @@ class TextEntityDependencyFilter(Filter):
     """
 
     def __init__(self,
-                 lang: str = 'en',
+                 spacy_model = 'en_core_web_md-3.5.0.zip',
                  min_dependency_num: int = 1,
                  any_or_all: str = 'all',
                  *args,
@@ -41,7 +41,7 @@ class TextEntityDependencyFilter(Filter):
                 f'Language [{lang}] is not supported in entities detection.'
                 f'Can only be one of ["en", "zh"].')
         self.lang = lang
-        self.model_key = prepare_model(model_type='spacy', lang=lang)
+        self.model_key = prepare_model(model_type='spacy', model_name=spacy_model)
         self.entity_poss = ['NOUN', 'PROPN', 'PRON']
         self.entity_tags = ['NN', 'NR', 'PN', 'NNS', 'NNP', 'NNPS', 'PRP']
         self.min_dependency_num = min_dependency_num

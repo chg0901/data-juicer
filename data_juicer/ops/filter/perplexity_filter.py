@@ -26,7 +26,8 @@ class PerplexityFilter(Filter):
     value."""
 
     def __init__(self,
-                 lang: str = 'en',
+                 sp_model: str = 'en.sp.model',
+                 kl_model: str = 'en.arpa.bin',
                  max_ppl: PositiveFloat = 1500,
                  *args,
                  **kwargs):
@@ -41,10 +42,8 @@ class PerplexityFilter(Filter):
         """
         super().__init__(*args, **kwargs)
         self.max_ppl = max_ppl
-        self.lang = lang
-        self.sp_model_key = prepare_model(lang=lang,
-                                          model_type='sentencepiece')
-        self.kl_model_key = prepare_model(lang=lang, model_type='kenlm')
+        self.sp_model_key = prepare_model(model_type='sentencepiece', model_name=sp_model)
+        self.kl_model_key = prepare_model(model_type='kenlm', model_name=kl_model)
 
     def compute_stats(self, sample, context=False):
         # check if it's computed already
@@ -56,8 +55,7 @@ class PerplexityFilter(Filter):
         if context and words_key in sample[Fields.context]:
             words = sample[Fields.context][words_key]
         else:
-            tokenizer = get_model(self.sp_model_key, self.lang,
-                                  'sentencepiece')
+            tokenizer = get_model(self.sp_model_key)
             words = get_words_from_document(
                 sample[self.text_key],
                 token_func=tokenizer.encode_as_pieces if tokenizer else None)
@@ -66,7 +64,7 @@ class PerplexityFilter(Filter):
         text = ' '.join(words)
         # compute perplexity
         logits, length = 0, 0
-        kenlm_model = get_model(self.kl_model_key, self.lang, 'kenlm')
+        kenlm_model = get_model(self.kl_model_key)
         for line in text.splitlines():
             logits += kenlm_model.score(line)
             length += (len(line.split()) + 1)

@@ -22,6 +22,7 @@ class LanguageIDScoreFilter(Filter):
 
     def __init__(self,
                  lang: Union[str, List[str], Tuple[str]] = '',
+                 ft_model: str = 'lid.176.bin',
                  min_score: ClosedUnitInterval = 0.8,
                  *args,
                  **kwargs):
@@ -45,7 +46,7 @@ class LanguageIDScoreFilter(Filter):
             # lang is a list of multiple languages
             self.lang = lang
         self.min_score = min_score
-        self.model_key = prepare_model(model_type='fasttext')
+        self.model_key = prepare_model(model_type='fasttext', model_name=ft_model)
 
     def compute_stats(self, sample):
         # check if it's computed already
@@ -54,7 +55,7 @@ class LanguageIDScoreFilter(Filter):
             return sample
 
         text = sample[self.text_key].lower().replace('\n', ' ')
-        ft_model = get_model(self.model_key, model_type='fasttext')
+        ft_model = get_model(self.model_key)
         if ft_model is None:
             err_msg = 'Model not loaded. Please retry later.'
             logger.error(err_msg)

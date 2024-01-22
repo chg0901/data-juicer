@@ -16,6 +16,7 @@ class ImageTextMatchingFilterTest(DataJuicerTestCaseBase):
     demo_path = os.path.join(data_path, 'blip.jpg')
     img3_path = os.path.join(data_path, 'img3.jpg')
     hf_blip = 'Salesforce/blip-itm-base-coco'
+    hf_blip = f'/mnt/data/shared/checkpoints/huggingface/{hf_blip}'
 
     @classmethod
     def tearDownClass(cls) -> None:

@@ -126,31 +126,25 @@ def get_keep_method_udf(keep_method):
                                   f'implemented for now.')
 
 
-def tokenize_dataset(ds, tokenizer):
-    if os.path.exists(tokenizer):
-        # if it's a local model
-        tkn = spm.SentencePieceProcessor()
-        tkn.load(tokenizer)
-    else:
-        # else, try to load it from our remote model list
-        tkn = prepare_sentencepiece_model(tokenizer, ())
+def tokenize_dataset(ds, sp_model):
+    tkn = prepare_sentencepiece_model(sp_model)
     tokenizer_udf = udf(lambda text: tkn.encode_as_pieces(text),
                         ArrayType(StringType()))
     logger.info('Tokenize texts using specific tokenizer...')
     return ds.withColumn('words', tokenizer_udf(col('text')))
 
 
-def train(output_model_path, ds, tokenizer=None):
+def train(output_model_path, ds, sp_model=None):
     logger.info('Preparing training quality classifier model...')
-    if tokenizer:
+    if sp_model:
         # tokenizer is not standard Tokenizer in PySpark, need to apply it
         # explicitly
-        ds = tokenize_dataset(ds, tokenizer)
+        ds = tokenize_dataset(ds, sp_model)
 
     # model
     hashingTF = HashingTF(inputCol='words', outputCol='features')
     lr = LogisticRegression()
-    if tokenizer is None:
+    if sp_model is None:
         std_tokenizer = Tokenizer(inputCol='text', outputCol='words')
         pipeline = Pipeline(stages=[std_tokenizer, hashingTF, lr])
     else:
@@ -163,12 +157,12 @@ def train(output_model_path, ds, tokenizer=None):
     model.write().overwrite().save(output_model_path)
 
 
-def eval(model_path, ds, tokenizer=None):
+def eval(model_path, ds, sp_model=None):
     logger.info('Preparing to evaluate...')
-    if tokenizer:
+    if sp_model:
         # tokenizer is not standard Tokenizer in PySpark, need to apply it
         # explicitly
-        ds = tokenize_dataset(ds, tokenizer)
+        ds = tokenize_dataset(ds, sp_model)
 
     logger.info('Start evaluation...')
     model = prepare_model(model_path)
@@ -187,12 +181,12 @@ def eval(model_path, ds, tokenizer=None):
     logger.info(f'P: {precision}, R: {recall}, F1: {F1}')
 
 
-def predict(model, ds, tokenizer=None, keep_method='label'):
+def predict(model, ds, sp_model=None, keep_method='label'):
     logger.info('Start scoring dataset...')
-    if tokenizer:
+    if sp_model:
         # tokenizer is not standard Tokenizer in PySpark, need to apply it
         # explicitly
-        ds = tokenize_dataset(ds, tokenizer)
+        ds = tokenize_dataset(ds, sp_model)
 
     prediction = model.transform(ds)
 

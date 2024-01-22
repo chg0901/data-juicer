@@ -165,7 +165,7 @@ def prepare_nltk_model(model_name='punkt.english.pickle'):
 
 
 def prepare_huggingface_model(model_name,
-                              with_model=True,
+                              return_model=True,
                               trust_remote_code=False):
     import transformers
     from transformers import (AutoConfig, AutoImageProcessor, AutoProcessor,
@@ -194,24 +194,24 @@ def prepare_huggingface_model(model_name,
     else:
         processor = None
 
-    if with_model:
+    if return_model:
         model = model_class.from_pretrained(model_name)
-    return (model, processor) if with_model else processor
+    return (model, processor) if return_model else processor
 
 
-def prepare_diversity_model(model_name='en_core_web_md-3.5.0.zip'):
+def prepare_spacy_model(model_name='en_core_web_md-3.5.0.zip'):
     """
-    Prepare diversity model for specific language.
+    Prepare spacy model for specific language.
 
     :param model_name: the model name to be loaded.
-    :param lang: language of diversity model. Should be one of ["zh",
+    :param lang: language of Spacy model. Should be one of ["zh",
         "en"]
-    :return: corresponding diversity model
+    :return: corresponding Spacy model
     """
     import spacy
 
     lang = model_name.split('_')[0]
-    assert lang in ('zh', 'en'), 'Diversity only support zh and en'
+    assert lang in ('zh', 'en'), 'Spacy only support zh and en'
     logger.info(f'Loading spacy model [{model_name}]...')
 
     # decompress the compressed model if it's not decompressed
@@ -227,11 +227,11 @@ def prepare_diversity_model(model_name='en_core_web_md-3.5.0.zip'):
         return decompressed_model_path
 
     try:
-        diversity_model = spacy.load(decompress_model(check_model(model_name)))
+        spacy_model = spacy.load(decompress_model(check_model(model_name)))
     except:  # noqa: E722
-        diversity_model = spacy.load(
+        spacy_model = spacy.load(
             decompress_model(check_model(model_name, force=True)))
-    return diversity_model
+    return spacy_model
 
 
 MODEL_FUNCTION_MAPPING = {
@@ -240,7 +240,7 @@ MODEL_FUNCTION_MAPPING = {
     'kenlm': prepare_kenlm_model,
     'nltk': prepare_nltk_model,
     'huggingface': prepare_huggingface_model,
-    'spacy': prepare_diversity_model,
+    'spacy': prepare_spacy_model,
 }
 
 

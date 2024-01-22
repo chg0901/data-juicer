@@ -26,7 +26,7 @@ class WordRepetitionFilter(Filter):
     specific range."""
 
     def __init__(self,
-                 lang: str = 'en',
+                 sp_model: str = 'en.sp.model',
                  tokenization: bool = False,
                  rep_len: PositiveInt = 10,
                  min_ratio: ClosedUnitInterval = 0.0,
@@ -53,11 +53,9 @@ class WordRepetitionFilter(Filter):
         self.min_ratio = min_ratio
         self.max_ratio = max_ratio
         self.model_key = None
-        self.lang = lang
-
+        
         if tokenization:
-            self.model_key = prepare_model(lang=lang,
-                                           model_type='sentencepiece')
+            self.model_key = prepare_model(model_type='sentencepiece', model_name=sp_model)
 
     def compute_stats(self, sample, context=False):
         # check if it's computed already
@@ -69,9 +67,7 @@ class WordRepetitionFilter(Filter):
         if context and words_key in sample[Fields.context]:
             words = sample[Fields.context][words_key]
         else:
-            tokenizer = get_model(self.model_key,
-                                  lang=self.lang,
-                                  model_type='sentencepiece')
+            tokenizer = get_model(self.model_key)
             words = get_words_from_document(
                 sample[self.text_key],
                 token_func=tokenizer.encode_as_pieces if tokenizer else None)

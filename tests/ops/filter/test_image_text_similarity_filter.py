@@ -51,7 +51,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
         }]
 
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='avg',
                                   any_or_all='any',
                                   horizontal_flip=False,
@@ -77,7 +77,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
         }]
 
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='avg',
                                   any_or_all='any',
                                   horizontal_flip=False,
@@ -103,7 +103,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
         }]
 
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='avg',
                                   any_or_all='any',
                                   horizontal_flip=True,
@@ -129,7 +129,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
         }]
 
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='avg',
                                   any_or_all='any',
                                   horizontal_flip=False,
@@ -153,7 +153,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
             'images': [self.cat_path, self.cat_path]
         }]
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='avg',
                                   any_or_all='any',
                                   horizontal_flip=False,
@@ -172,7 +172,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
         }]
         tgt_list = []
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='avg',
                                   any_or_all='all',
                                   horizontal_flip=False,
@@ -194,7 +194,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
             'images': [self.cat_path, self.img3_path]
         }]
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='avg',
                                   any_or_all='any',
                                   horizontal_flip=False,
@@ -216,7 +216,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
             'images': [self.cat_path, self.img3_path]
         }]
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='max',
                                   any_or_all='any',
                                   horizontal_flip=False,
@@ -239,7 +239,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
         }]
 
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='min',
                                   any_or_all='any',
                                   horizontal_flip=False,
@@ -267,7 +267,7 @@ class ImageTextSimilarityFilterTest(DataJuicerTestCaseBase):
             'images': [self.cat_path, self.cat_path]
         }] * 10
         dataset = Dataset.from_list(ds_list)
-        op = ImageTextSimilarityFilter(model_name=self.hf_clip,
+        op = ImageTextSimilarityFilter(hf_clip=self.hf_clip,
                                   reduce_mode='avg',
                                   any_or_all='any',
                                   horizontal_flip=False,

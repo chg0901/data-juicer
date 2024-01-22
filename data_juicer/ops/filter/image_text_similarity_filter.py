@@ -29,7 +29,7 @@ class ImageTextSimilarityFilter(Filter):
     within a specific range."""
 
     def __init__(self,
-                 model_name='openai/clip-vit-base-patch32',
+                 hf_clip='openai/clip-vit-base-patch32',
                  min_score: ClosedUnitInterval = 0.1,
                  max_score: ClosedUnitInterval = 1.0,
                  horizontal_flip: bool = False,
@@ -69,7 +69,7 @@ class ImageTextSimilarityFilter(Filter):
             raise ValueError(f'Keep strategy [{any_or_all}] is not supported. '
                              f'Can only be one of ["any", "all"].')
         self.any = (any_or_all == 'any')
-        self.model_key = prepare_model('huggingface', model_name=model_name)
+        self.model_key = prepare_model(model_type='huggingface', model_name=hf_clip)
         self.reduce_mode = reduce_mode
         self.horizontal_flip = horizontal_flip
         self.vertical_flip = vertical_flip

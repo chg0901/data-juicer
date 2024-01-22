@@ -4,7 +4,7 @@ import pandas as pd
 import spacy
 from loguru import logger
 
-from data_juicer.utils.model_utils import MODEL_ZOO, prepare_model
+from data_juicer.utils.model_utils import MODEL_ZOO, prepare_model, get_model
 
 
 # Modify from self_instruct, please refer to
@@ -86,34 +86,34 @@ class DiversityAnalysis:
     """Apply diversity analysis for each sample and get an overall analysis
     result."""
 
-    def __init__(self, dataset, output_path, lang_or_model='en'):
+    def __init__(self, dataset, output_path, spacy_model='en_core_web_md-3.5.0.zip'):
         """Initialization method :param dataset: the dataset to be analysed
         :param output_path: path to store the analysis results :param
-        lang_or_model: the diversity model or a specific language used to load
+        spacy_model: the diversity model or a specific language used to load
         the diversity model."""
 
         self.dataset = dataset
         self.output_path = output_path
         if not os.path.exists(self.output_path):
             os.makedirs(self.output_path)
-        self.lang_or_model = lang_or_model
+        self.spacy_model = spacy_model
 
-    def compute(self, lang_or_model=None, column_name='text'):
+    def compute(self, spacy_model=None, column_name='text'):
         """
         Apply lexical tree analysis on each sample.
 
-        :param lang_or_model: the diversity model or a specific language
+        :param spacy_model: the diversity model or a specific language
             used to load the diversity model
         :param column_name: the name of column to be analysed
         :return: the analysis result.
         """
         # load diversity model
-        lang_or_model = lang_or_model if lang_or_model else self.lang_or_model
-        if isinstance(lang_or_model, str):
-            diversity_model = MODEL_ZOO.get(
-                prepare_model(lang_or_model, 'spacy'))
+        spacy_model = spacy_model if spacy_model else self.spacy_model
+        if isinstance(spacy_model, str):
+            model_key = prepare_model('spacy', model_name=spacy_model)
+            diversity_model = get_model(model_key)
         else:
-            diversity_model = lang_or_model
+            diversity_model = spacy_model
 
         assert isinstance(diversity_model, spacy.Language)
 
@@ -130,14 +130,14 @@ class DiversityAnalysis:
         return pd.DataFrame(dataset)
 
     def analyse(self,
-                lang_or_model=None,
+                spacy_model=None,
                 column_name='text',
                 postproc_func=get_diversity,
                 **postproc_kwarg):
         """
         Apply diversity analysis on the whole dataset.
 
-        :param lang_or_model: the diversity model or a specific language
+        :param spacy_model: the diversity model or a specific language
             used to load the diversity model
         :param column_name: the name of column to be analysed
         :param postproc_func: function to analyse diversity. In default,
@@ -146,7 +146,7 @@ class DiversityAnalysis:
         :return:
         """
         # get the lexical tree analysis result
-        raw_df = self.compute(lang_or_model=lang_or_model,
+        raw_df = self.compute(spacy_model=spacy_model,
                               column_name=column_name)
         # get the result of diversity analysis
         df = postproc_func(raw_df, **postproc_kwarg)

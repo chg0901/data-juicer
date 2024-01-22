@@ -22,7 +22,7 @@
 #   - model: quality classifier name to apply. It's "gpt3" in default. You can
 #       use one of ["gpt3", "chinese", "code"] we provided, or you can set it
 #       to the path to your own model trained using the train.py tool.
-#   - tokenizer: what tokenizer to use to tokenize texts. It's None in default,
+#   - sp_model: what tokenizer to use to tokenize texts. It's None in default,
 #       which means using the standard Tokenizer of PySpark. You can use one of
 #       ["zh.sp.model", "code.sp.model"] we provided, or you can set it to the
 #       path to your own sentencepiece model.
@@ -36,15 +36,15 @@
 # Recommended arguments for provided trained models:
 #   - gpt3:
 #       - model: gpt3
-#       - tokenizer: None
+#       - sp_model: None
 #       - keep_method: gpt3
 #   - chinese:
 #       - model: chinese
-#       - tokenizer: zh.sp.model
+#       - sp_model: zh.sp.model
 #       - keep_method: label
 #   - code:
 #       - model: code
-#       - tokenizer: code.sp.model
+#       - sp_model: code.sp.model
 #       - keep_method: label
 #
 # Notice:
@@ -69,7 +69,7 @@ from tools.quality_classifier.qc_utils import (export_result, init_spark,
 def predict_score(dataset_path,
                   result_path,
                   model='gpt3',
-                  tokenizer=None,
+                  sp_model=None,
                   keep_method='gpt3',
                   text_key='text',
                   overall_stats=False):
@@ -80,7 +80,7 @@ def predict_score(dataset_path,
     :param model: quality classifier name to apply. It's "gpt3" in default. You
         can use one of ["gpt3", "chinese", "code"] we provided, or you can set
         it to the path to your own model trained using the train.py tool
-    :param tokenizer: what tokenizer to use to tokenize texts. It's None in
+    :param sp_model: what tokenizer to use to tokenize texts. It's None in
         default, which means using the standard Tokenizer of PySpark. You can
         use one of ["zh.sp.model", "code.sp.model"] we provided, or you can set
         it to the path to your own sentencepiece model
@@ -96,13 +96,13 @@ def predict_score(dataset_path,
     """
     # set default tokenizers for default models
     if model == 'chinese':
-        tokenizer = 'zh.sp.model'
+        sp_model = 'zh.sp.model'
         keep_method = 'label'
     if model == 'code':
-        tokenizer = 'code.sp.model'
+        sp_model = 'code.sp.model'
         keep_method = 'label'
     if model == 'gpt3':
-        tokenizer = None
+        sp_model = None
         keep_method = 'gpt3'
 
     # initialize a spark session
@@ -118,7 +118,7 @@ def predict_score(dataset_path,
     # load dataset
     ds = load_dataset(spark, dataset_path, text_key=text_key)
     # start to predict
-    pred = predict(model, ds, tokenizer=tokenizer, keep_method=keep_method)
+    pred = predict(model, ds, sp_model=sp_model, keep_method=keep_method)
     # export prediction result to specific path
     export_result(pred, result_path)
 
