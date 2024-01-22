@@ -48,9 +48,10 @@ class WordNumFilter(Filter):
         self.min_num = min_num
         self.max_num = max_num
         self.model_key = None
-        
+
         if tokenization:
-            self.model_key = prepare_model(model_type='sentencepiece', model_name=sp_model)
+            self.model_key = prepare_model(model_type='sentencepiece',
+                                           model_name=sp_model)
 
     def compute_stats(self, sample, context=False):
         # check if it's computed already

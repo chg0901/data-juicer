@@ -72,7 +72,8 @@ class FlaggedWordFilter(Filter):
                 val for vals in self.FLAGGED_WORDS.values() for val in vals
             ]
         if tokenization:
-            self.model_key = prepare_model(model_type='sentencepiece', model_name=sp_model)
+            self.model_key = prepare_model(model_type='sentencepiece',
+                                           model_name=sp_model)
 
     def compute_stats(self, sample, context=False):
         # check if it's computed already

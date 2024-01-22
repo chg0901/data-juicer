@@ -180,11 +180,11 @@ class GenerateCaptionMapper(Mapper):
                 prompt_texts = None
 
             inputs = processor(images=image_chunk,
-                                text=prompt_texts,
-                                return_tensors='pt').to(model.device)
+                               text=prompt_texts,
+                               return_tensors='pt').to(model.device)
             for i in range(self.caption_num):
                 generated_ids = model.generate(**inputs,
-                                                do_sample=True).detach().cpu()
+                                               do_sample=True).detach().cpu()
                 generated_text = processor.batch_decode(
                     generated_ids, skip_special_tokens=True)
                 generated_text_candidates_single_chunk[i] = generated_text

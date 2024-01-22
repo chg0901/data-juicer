@@ -14,7 +14,7 @@ class TextActionFilter(Filter):
     """
 
     def __init__(self,
-                 spacy_model = 'en_core_web_md-3.5.0.zip',
+                 spacy_model='en_core_web_md-3.5.0.zip',
                  min_action_num: int = 1,
                  *args,
                  **kwargs):
@@ -29,7 +29,8 @@ class TextActionFilter(Filter):
         """
         super().__init__(*args, **kwargs)
 
-        self.model_key = prepare_model(model_type='spacy', model_name=spacy_model)
+        self.model_key = prepare_model(model_type='spacy',
+                                       model_name=spacy_model)
         self.action_poss = ['VERB']
         self.action_tags = ['VV', 'VB', 'VBP', 'VBZ', 'VBD', 'VBG', 'VBN']
         self.min_action_num = min_action_num

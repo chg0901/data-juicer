@@ -4,7 +4,7 @@ import pandas as pd
 import spacy
 from loguru import logger
 
-from data_juicer.utils.model_utils import MODEL_ZOO, prepare_model, get_model
+from data_juicer.utils.model_utils import get_model, prepare_model
 
 
 # Modify from self_instruct, please refer to
@@ -86,7 +86,10 @@ class DiversityAnalysis:
     """Apply diversity analysis for each sample and get an overall analysis
     result."""
 
-    def __init__(self, dataset, output_path, spacy_model='en_core_web_md-3.5.0.zip'):
+    def __init__(self,
+                 dataset,
+                 output_path,
+                 spacy_model='en_core_web_md-3.5.0.zip'):
         """Initialization method :param dataset: the dataset to be analysed
         :param output_path: path to store the analysis results :param
         spacy_model: the diversity model or a specific language used to load
@@ -146,8 +149,7 @@ class DiversityAnalysis:
         :return:
         """
         # get the lexical tree analysis result
-        raw_df = self.compute(spacy_model=spacy_model,
-                              column_name=column_name)
+        raw_df = self.compute(spacy_model=spacy_model, column_name=column_name)
         # get the result of diversity analysis
         df = postproc_func(raw_df, **postproc_kwarg)
 

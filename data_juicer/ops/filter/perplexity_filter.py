@@ -42,8 +42,10 @@ class PerplexityFilter(Filter):
         """
         super().__init__(*args, **kwargs)
         self.max_ppl = max_ppl
-        self.sp_model_key = prepare_model(model_type='sentencepiece', model_name=sp_model)
-        self.kl_model_key = prepare_model(model_type='kenlm', model_name=kl_model)
+        self.sp_model_key = prepare_model(model_type='sentencepiece',
+                                          model_name=sp_model)
+        self.kl_model_key = prepare_model(model_type='kenlm',
+                                          model_name=kl_model)
 
     def compute_stats(self, sample, context=False):
         # check if it's computed already

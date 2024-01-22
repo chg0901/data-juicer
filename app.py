@@ -40,7 +40,8 @@ def convert_to_jsonl(df):
 
 @st.cache_data
 def get_diversity_model(lang):
-    model_key = prepare_model('spacy', model_name=f'{lang}_core_web_md-3.5.0.zip')
+    model_key = prepare_model('spacy',
+                              model_name=f'{lang}_core_web_md-3.5.0.zip')
     diversity_model = MODEL_ZOO.get(model_key)
     return diversity_model
 

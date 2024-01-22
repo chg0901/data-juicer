@@ -69,7 +69,8 @@ class ImageTextSimilarityFilter(Filter):
             raise ValueError(f'Keep strategy [{any_or_all}] is not supported. '
                              f'Can only be one of ["any", "all"].')
         self.any = (any_or_all == 'any')
-        self.model_key = prepare_model(model_type='huggingface', model_name=hf_clip)
+        self.model_key = prepare_model(model_type='huggingface',
+                                       model_name=hf_clip)
         self.reduce_mode = reduce_mode
         self.horizontal_flip = horizontal_flip
         self.vertical_flip = vertical_flip

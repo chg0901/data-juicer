@@ -14,7 +14,10 @@ with AvailabilityChecking(['nltk'], OP_NAME):
 class SentenceSplitMapper(Mapper):
     """Mapper to split text samples to sentences."""
 
-    def __init__(self, nltk_model: str = 'punkt.english.pickle', *args, **kwargs):
+    def __init__(self,
+                 nltk_model: str = 'punkt.english.pickle',
+                 *args,
+                 **kwargs):
         """
         Initialization method.
 
@@ -23,7 +26,8 @@ class SentenceSplitMapper(Mapper):
         :param kwargs: extra args
         """
         super().__init__(*args, **kwargs)
-        self.model_key = prepare_model(model_type='nltk', model_name=nltk_model)
+        self.model_key = prepare_model(model_type='nltk',
+                                       model_name=nltk_model)
 
     def process(self, sample):
 

@@ -53,9 +53,10 @@ class WordRepetitionFilter(Filter):
         self.min_ratio = min_ratio
         self.max_ratio = max_ratio
         self.model_key = None
-        
+
         if tokenization:
-            self.model_key = prepare_model(model_type='sentencepiece', model_name=sp_model)
+            self.model_key = prepare_model(model_type='sentencepiece',
+                                           model_name=sp_model)
 
     def compute_stats(self, sample, context=False):
         # check if it's computed already

@@ -2,7 +2,6 @@ import os
 import zipfile
 
 import numpy as np
-import sentencepiece as spm
 import wget
 from loguru import logger
 from pyspark.ml import Pipeline, PipelineModel

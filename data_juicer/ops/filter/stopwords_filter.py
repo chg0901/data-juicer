@@ -62,7 +62,7 @@ class StopWordsFilter(Filter):
         self.words_aug_group_sizes = words_aug_group_sizes
         self.words_aug_join_char = words_aug_join_char
         self.model_key = None
-        
+
         self.STOPWORDS = load_words_asset(words_dir=stopwords_dir,
                                           words_type='stopwords')
         if 'all' not in self.STOPWORDS:
@@ -70,7 +70,8 @@ class StopWordsFilter(Filter):
                 val for vals in self.STOPWORDS.values() for val in vals
             ]
         if tokenization:
-            self.model_key = prepare_model(model_type='sentencepiece', model_name=sp_model)
+            self.model_key = prepare_model(model_type='sentencepiece',
+                                           model_name=sp_model)
 
     def compute_stats(self, sample, context=False):
         # check if it's computed already

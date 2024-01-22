@@ -46,7 +46,8 @@ class LanguageIDScoreFilter(Filter):
             # lang is a list of multiple languages
             self.lang = lang
         self.min_score = min_score
-        self.model_key = prepare_model(model_type='fasttext', model_name=ft_model)
+        self.model_key = prepare_model(model_type='fasttext',
+                                       model_name=ft_model)
 
     def compute_stats(self, sample):
         # check if it's computed already
