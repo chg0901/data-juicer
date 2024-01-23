@@ -160,7 +160,7 @@ def prepare_nltk_model(model_name='punkt.english.pickle'):
     try:
         nltk_model = load(check_model(model_name))
     except:  # noqa: E722
-        nltk_model = load(check_model(model_nameforce=True))
+        nltk_model = load(check_model(model_name, force=True))
     return nltk_model
 
 
