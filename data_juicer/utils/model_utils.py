@@ -149,7 +149,7 @@ def prepare_nltk_model(model_name='punkt.english.pickle'):
 
     valid_langs = ('english', 'french', 'portuguese', 'spanish')
     name_parts = model_name.split('.')
-    if name_parts > 1:
+    if len(name_parts) > 1:
         lang = name_parts[1]
         assert (lang in valid_langs(
         )), 'language must be one of the following: {}'.format(valid_langs)

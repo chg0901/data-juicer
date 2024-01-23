@@ -46,7 +46,7 @@ class RemoveWordsWithIncorrectSubstringsMapperTest(unittest.TestCase):
             'target': '请用百度www.baidu.进行搜索'
         }]
 
-        op = RemoveWordsWithIncorrectSubstringsMapper(lang='zh',
+        op = RemoveWordsWithIncorrectSubstringsMapper(sp_model='zh.sp.model',
                                                       tokenization=True,
                                                       substrings=['com', '算子'])
         self._run_remove_words_with_incorrect_sbstrings(samples, op)

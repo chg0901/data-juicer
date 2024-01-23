@@ -44,7 +44,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'words_num_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'max_num': 100000,
                 'min_num': 20,
                 'text_key': 'text',
@@ -59,7 +59,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'word_repetition_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'max_ratio': 0.19,
                 'min_ratio': 0.0,
                 'rep_len': 5,
@@ -94,7 +94,8 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'perplexity_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
+                'kl_model': 'en.arpa.bin',
                 'max_ppl': 1500,
                 'text_key': 'text'
             }
@@ -167,7 +168,7 @@ class OpFusionTest(unittest.TestCase):
                 [
                     {  # noqa: E501
                         'words_num_filter': {
-                            'lang': 'en',
+                            'sp_model': 'en.sp.model',
                             'max_num': 100000,
                             'min_num': 20,
                             'text_key': 'text',
@@ -176,7 +177,7 @@ class OpFusionTest(unittest.TestCase):
                     },
                     {
                         'word_repetition_filter': {
-                            'lang': 'en',
+                            'sp_model': 'en.sp.model',
                             'max_ratio': 0.19,
                             'min_ratio': 0.0,
                             'rep_len': 5,
@@ -208,7 +209,8 @@ class OpFusionTest(unittest.TestCase):
                     },
                     {
                         'perplexity_filter': {
-                            'lang': 'en',
+                            'sp_model': 'en.sp.model',
+                            'kl_model': 'en.arpa.bin',
                             'max_ppl': 1500,
                             'text_key': 'text'
                         }
@@ -244,7 +246,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'remove_words_with_incorrect_substrings_mapper': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'substrings': None,
                 'text_key': 'text',
                 'tokenization': False
@@ -270,7 +272,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'remove_words_with_incorrect_substrings_mapper': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'substrings': None,
                 'text_key': 'text',
                 'tokenization': False
@@ -395,7 +397,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'words_num_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'max_num': 100000,
                 'min_num': 20,
                 'text_key': 'text',
@@ -434,7 +436,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'words_num_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'max_num': 100000,
                 'min_num': 20,
                 'text_key': 'text',
@@ -485,7 +487,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'remove_words_with_incorrect_substrings_mapper': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'substrings': None,
                 'text_key': 'text',
                 'tokenization': False
@@ -513,7 +515,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'word_repetition_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'max_ratio': 0.19,
                 'min_ratio': 0.0,
                 'rep_len': 5,
@@ -528,7 +530,8 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'perplexity_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
+                'kl_model': 'en.arpa.bin',
                 'max_ppl': 1500,
                 'text_key': 'text'
             }
@@ -591,7 +594,7 @@ class OpFusionTest(unittest.TestCase):
             },
             {
                 'remove_words_with_incorrect_substrings_mapper': {
-                    'lang': 'en',
+                    'sp_model': 'en.sp.model',
                     'substrings': None,
                     'text_key': 'text',
                     'tokenization': False
@@ -624,7 +627,7 @@ class OpFusionTest(unittest.TestCase):
                 [
                     {  # noqa: E501
                         'words_num_filter': {
-                            'lang': 'en',
+                            'sp_model': 'en.sp.model',
                             'max_num': 100000,
                             'min_num': 20,
                             'text_key': 'text',
@@ -633,7 +636,7 @@ class OpFusionTest(unittest.TestCase):
                     },
                     {
                         'word_repetition_filter': {
-                            'lang': 'en',
+                            'sp_model': 'en.sp.model',
                             'max_ratio': 0.19,
                             'min_ratio': 0.0,
                             'rep_len': 5,
@@ -643,7 +646,8 @@ class OpFusionTest(unittest.TestCase):
                     },
                     {
                         'perplexity_filter': {
-                            'lang': 'en',
+                            'sp_model': 'en.sp.model',
+                            'kl_model': 'en.arpa.bin',
                             'max_ppl': 1500,
                             'text_key': 'text'
                         }
@@ -668,7 +672,7 @@ class OpFusionTest(unittest.TestCase):
 
         original_process = [{
             'words_num_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'max_num': 100000,
                 'min_num': 20,
                 'text_key': 'text',
@@ -676,7 +680,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'word_repetition_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'max_ratio': 0.19,
                 'min_ratio': 0.0,
                 'rep_len': 5,
@@ -705,7 +709,8 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'perplexity_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
+                'kl_model': 'en.arpa.bin',
                 'max_ppl': 1500,
                 'text_key': 'text'
             }
@@ -715,7 +720,7 @@ class OpFusionTest(unittest.TestCase):
             [
                 {  # noqa: E501
                     'words_num_filter': {
-                        'lang': 'en',
+                        'sp_model': 'en.sp.model',
                         'max_num': 100000,
                         'min_num': 20,
                         'text_key': 'text',
@@ -724,7 +729,7 @@ class OpFusionTest(unittest.TestCase):
                 },
                 {
                     'word_repetition_filter': {
-                        'lang': 'en',
+                        'sp_model': 'en.sp.model',
                         'max_ratio': 0.19,
                         'min_ratio': 0.0,
                         'rep_len': 5,
@@ -756,7 +761,8 @@ class OpFusionTest(unittest.TestCase):
                 },
                 {
                     'perplexity_filter': {
-                        'lang': 'en',
+                        'sp_model': 'en.sp.model',
+                        'kl_model': 'en.arpa.bin',
                         'max_ppl': 1500,
                         'text_key': 'text'
                     }
@@ -787,7 +793,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'remove_words_with_incorrect_substrings_mapper': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'substrings': None,
                 'text_key': 'text',
                 'tokenization': False
@@ -800,7 +806,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'words_num_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'max_num': 100000,
                 'min_num': 20,
                 'text_key': 'text',
@@ -820,7 +826,7 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'word_repetition_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
                 'max_ratio': 0.19,
                 'min_ratio': 0.0,
                 'rep_len': 5,
@@ -860,7 +866,8 @@ class OpFusionTest(unittest.TestCase):
             }
         }, {
             'perplexity_filter': {
-                'lang': 'en',
+                'sp_model': 'en.sp.model',
+                'kl_model': 'en.arpa.bin',
                 'max_ppl': 1500,
                 'text_key': 'text'
             }
@@ -900,7 +907,7 @@ class OpFusionTest(unittest.TestCase):
             },
             {
                 'remove_words_with_incorrect_substrings_mapper': {
-                    'lang': 'en',
+                    'sp_model': 'en.sp.model',
                     'substrings': None,
                     'text_key': 'text',
                     'tokenization': False
@@ -950,7 +957,7 @@ class OpFusionTest(unittest.TestCase):
                 [
                     {  # noqa: E501
                         'words_num_filter': {
-                            'lang': 'en',
+                            'sp_model': 'en.sp.model',
                             'max_num': 100000,
                             'min_num': 20,
                             'text_key': 'text',
@@ -959,7 +966,7 @@ class OpFusionTest(unittest.TestCase):
                     },
                     {
                         'word_repetition_filter': {
-                            'lang': 'en',
+                            'sp_model': 'en.sp.model',
                             'max_ratio': 0.19,
                             'min_ratio': 0.0,
                             'rep_len': 5,
@@ -991,7 +998,8 @@ class OpFusionTest(unittest.TestCase):
                     },
                     {
                         'perplexity_filter': {
-                            'lang': 'en',
+                            'sp_model': 'en.sp.model',
+                            'kl_model': 'en.arpa.bin',
                             'max_ppl': 1500,
                             'text_key': 'text'
                         }

@@ -52,7 +52,7 @@ class TokenNumFilter(Filter):
         if StatsKeys.num_token in sample[Fields.stats]:
             return sample
 
-        tokenizer = get_model(self.model_key, model_type='huggingface')
+        tokenizer = get_model(self.model_key)
         tokens = get_words_from_document(
             sample[self.text_key],
             token_func=tokenizer.tokenize if tokenizer else None)
